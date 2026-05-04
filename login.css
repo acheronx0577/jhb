@@ -210,27 +210,24 @@ body {
   border: 2.5px solid var(--fg);
   border-radius: 9px; overflow: hidden;
   background: var(--bg2);
+  padding: 3px;
+  gap: 3px;
 }
-.tab-pill {
-  position: absolute; top:0; left:0;
-  width:50%; height:100%;
-  background: var(--fg); border-radius: 6px;
-  transition: transform .25s var(--ease);
-  pointer-events: none; z-index: 0;
-}
-.tabs[data-active="signup"] .tab-pill { transform: translateX(100%); }
+.tab-pill { display: none; }
 .tab {
-  flex:1; padding:11px; min-height:44px; /* touch target */
-  font-family:'Anton',sans-serif; font-size:13px;
-  letter-spacing:.08em; text-transform:uppercase;
-  border:none; cursor:pointer; background:transparent;
-  position:relative; z-index:1;
-  transition: color var(--dur);
+  flex: 1; padding: 11px; min-height: 44px;
+  font-family: 'Anton', sans-serif; font-size: 13px;
+  letter-spacing: .08em; text-transform: uppercase;
+  border: none; cursor: pointer;
+  background: transparent; color: var(--fg);
+  position: relative; z-index: 1;
+  border-radius: 6px;
+  transition: background var(--dur), color var(--dur);
   touch-action: manipulation;
 }
-.tab.on  { color:#fff; }
-.tab.off { color:var(--fg); }
-.tab.off:hover { color:var(--accent4); }
+.tab.on  { background: var(--fg); color: #fff; }
+.tab.off { background: transparent; color: var(--fg); }
+.tab.off:hover { background: #c8ccc3; }
 
 /* Social */
 .social-row { display:flex; gap:9px; }
@@ -352,6 +349,46 @@ body {
   transform:translate(2px,2px);
   box-shadow:1px 1px 0 var(--fg);
   background:#c04a3a;
+}
+
+/* Password toggle wrapper */
+.pw-wrap {
+  position: relative;
+}
+.pw-wrap .fi {
+  padding-right: 44px;
+}
+.pw-toggle {
+  position: absolute;
+  right: 12px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  padding: 4px; color: var(--accent4);
+  display: flex; align-items: center; justify-content: center;
+  transition: color var(--dur);
+}
+.pw-toggle:hover { color: var(--fg); }
+.pw-toggle svg { display: block; }
+.pw-toggle .eye-off { display: none; }
+.pw-toggle.visible .eye-on  { display: none; }
+.pw-toggle.visible .eye-off { display: block; }
+
+/* ── Mobile: hide left panel ── */
+@media (max-width: 640px) {
+  body { padding: 0; align-items: stretch; }
+  .card {
+    grid-template-columns: 1fr;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    min-height: 100vh;
+  }
+  .left { display: none; }
+  .right {
+    border-left: none;
+    padding: 48px 28px;
+    justify-content: center;
+    min-height: 100vh;
+  }
 }
 
 /* ── end ── */

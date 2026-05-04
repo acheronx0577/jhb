@@ -10,6 +10,9 @@ window.addEventListener('load', () => {
       items.forEach((el, i) => {
         setTimeout(() => el.classList.add('visible'), 120 + i * 70);
       });
+
+      // Initialize pill position
+      updatePill();
     });
   });
 });
@@ -51,6 +54,18 @@ const states = {
   },
 };
 
+// ── Update pill position ──
+function updatePill() {
+  const activeTab = document.querySelector('.tab.on');
+  const pill = document.querySelector('.tab-pill');
+  if (activeTab && pill) {
+    const pill_left = activeTab.offsetLeft;
+    const pill_width = activeTab.offsetWidth;
+    pill.style.left = pill_left + 'px';
+    pill.style.width = pill_width + 'px';
+  }
+}
+
 // ── Tab switching ──
 tabs.forEach(tab => {
   tab.addEventListener('click', () => {
@@ -62,6 +77,8 @@ tabs.forEach(tab => {
       t.classList.toggle('off', t.dataset.tab !== mode);
       t.setAttribute('aria-pressed', String(t.dataset.tab === mode));
     });
+
+    updatePill();
 
     tabsWrap.dataset.active = mode;
 
@@ -77,7 +94,7 @@ tabs.forEach(tab => {
       signupFields.classList.add('visible');
       tileRow.classList.add('expanded');
       card.classList.add('expanded');
-      strengthWrap.style.display = 'block';
+      strengthWrap.classList.add('visible');
       identifierInput.value = '';
       passwordInput.value = '';
       setStrength(0, '', '');
@@ -85,7 +102,7 @@ tabs.forEach(tab => {
       signupFields.classList.remove('visible');
       tileRow.classList.remove('expanded');
       card.classList.remove('expanded');
-      strengthWrap.style.display = 'none';
+      strengthWrap.classList.remove('visible');
       passwordInput.value = '';
       document.getElementById('username-input').value = '';
       document.getElementById('phone-input').value = '';

@@ -81,6 +81,7 @@ body {
     opacity .55s ease,
     transform .55s cubic-bezier(.22,.68,0,1.1),
     min-height .45s cubic-bezier(.4,0,.2,1);
+  will-change: transform, opacity;
 }
 .card.expanded {
   min-height: 680px;
@@ -159,6 +160,7 @@ body {
   display: flex; flex-direction: column; align-items: center; gap: 6px;
   cursor: default; position: relative; overflow: hidden;
   transition: background var(--dur), border-color var(--dur), transform var(--dur) var(--ease);
+  will-change: transform;
 }
 .tile-row.expanded .tile { padding: 20px 6px; }
 .tile::after { display: none; }
@@ -195,6 +197,7 @@ body {
   opacity: 0;
   transform: translateY(10px);
   transition: opacity .4s ease, transform .4s var(--ease);
+  will-change: transform, opacity;
 }
 .ritem.visible { opacity: 1; transform: translateY(0); }
 
@@ -257,6 +260,7 @@ body {
   cursor:pointer; position:relative; overflow:hidden;
   transition: transform .15s, box-shadow .15s;
   touch-action: manipulation;
+  will-change: transform;
 }
 .sb-g {
   background:#fff; color:var(--fg);
@@ -386,6 +390,7 @@ body {
   box-shadow:4px 4px 0 var(--fg);
   transition: background .15s, transform .1s, box-shadow .1s;
   touch-action: manipulation;
+  will-change: transform;
 }
 .btn:hover {
   background:#d45a4a;

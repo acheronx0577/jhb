@@ -77,7 +77,13 @@ body {
   box-shadow: 12px 12px 0 var(--accent1), 22px 22px 0 rgba(237,106,90,.15);
   opacity: 0;
   transform: translateY(28px) scale(.97);
-  transition: opacity .55s ease, transform .55s cubic-bezier(.22,.68,0,1.1);
+  transition:
+    opacity .55s ease,
+    transform .55s cubic-bezier(.22,.68,0,1.1),
+    min-height .45s cubic-bezier(.4,0,.2,1);
+}
+.card.expanded {
+  min-height: 680px;
 }
 .card.ready {
   opacity: 1;
@@ -213,7 +219,18 @@ body {
   padding: 3px;
   gap: 3px;
 }
-.tab-pill { display: none; }
+.tab-pill {
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  height: calc(100% - 6px);
+  background: var(--fg);
+  border-radius: 6px;
+  transition: left .3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+  pointer-events: none;
+  will-change: left;
+}
 .tab {
   flex: 1; padding: 11px; min-height: 44px;
   font-family: 'Anton', sans-serif; font-size: 13px;
@@ -292,11 +309,42 @@ body {
 }
 
 /* Signup extra */
-.signup-fields { display:none; flex-direction:column; gap:16px; }
-.signup-fields.visible { display:flex; }
+.signup-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    max-height .45s cubic-bezier(.4,0,.2,1),
+    opacity    .35s ease,
+    margin     .45s cubic-bezier(.4,0,.2,1);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.signup-fields.visible {
+  max-height: 200px;
+  opacity: 1;
+  pointer-events: auto;
+  margin-top: 0;
+}
 
 /* Strength */
-#strength-wrap { display:none; margin-top:-8px; }
+#strength-wrap {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-height .4s cubic-bezier(.4,0,.2,1),
+    opacity    .3s ease;
+  margin-top: -8px;
+}
+#strength-wrap.visible {
+  max-height: 40px;
+  opacity: 1;
+}
 .strength-track {
   height:5px; background:var(--bg2);
   border-radius:100px; overflow:hidden;

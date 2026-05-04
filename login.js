@@ -117,7 +117,14 @@ leftPanel.addEventListener('mouseleave', () => {
   hero.style.cssText = '';
 });
 
-// ── Password strength ──
+// ── Password visibility toggle ──
+const pwToggle = document.getElementById('pw-toggle');
+pwToggle.addEventListener('click', () => {
+  const isVisible = passwordInput.type === 'text';
+  passwordInput.type = isVisible ? 'password' : 'text';
+  pwToggle.classList.toggle('visible', !isVisible);
+  pwToggle.setAttribute('aria-label', isVisible ? 'Show password' : 'Hide password');
+});
 function setStrength(pct, label, color) {
   strengthBar.style.width      = pct + '%';
   strengthBar.style.background = color;

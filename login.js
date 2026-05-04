@@ -1,5 +1,14 @@
 // ── Wait for fonts + first paint, THEN trigger entrance ──
-window.addEventListener('load', () => {
+Promise.all([
+  document.fonts ? document.fonts.ready : Promise.resolve(),
+  new Promise(resolve => {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', resolve);
+    } else {
+      resolve();
+    }
+  })
+]).then(() => {
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       // Card slides in
@@ -124,11 +133,21 @@ document.querySelectorAll('.sb').forEach(sb => {
 });
 
 // ── Hero parallax — stronger follow ──
+let leftRect = leftPanel.getBoundingClientRect();
+let isTicking = false;
+window.addEventListener('resize', () => {
+  leftRect = leftPanel.getBoundingClientRect();
+});
 leftPanel.addEventListener('mousemove', (e) => {
-  const rect = leftPanel.getBoundingClientRect();
-  const x = ((e.clientX - rect.left)  / rect.width  - .5) * 28;
-  const y = ((e.clientY - rect.top)   / rect.height - .5) * 18;
-  hero.style.cssText = `animation:none; transform:translate(${x}px,${y}px)`;
+  if (!isTicking) {
+    window.requestAnimationFrame(() => {
+      const x = ((e.clientX - leftRect.left)  / leftRect.width  - .5) * 28;
+      const y = ((e.clientY - leftRect.top)   / leftRect.height - .5) * 18;
+      hero.style.cssText = `animation:none; transform:translate(${x}px,${y}px)`;
+      isTicking = false;
+    });
+    isTicking = true;
+  }
 });
 leftPanel.addEventListener('mouseleave', () => {
   hero.style.cssText = '';

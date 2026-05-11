@@ -303,7 +303,11 @@ body {
   padding:12px 14px; min-height:44px; /* touch target */
   font-family:'Space Mono',monospace; font-size:12px;
   color:var(--fg); outline:none;
-  transition: border-color var(--dur), box-shadow var(--dur), transform .15s;
+  transition:
+    padding .35s cubic-bezier(.4,0,.2,1),
+    min-height .35s cubic-bezier(.4,0,.2,1),
+    font-size .25s ease,
+    border-color var(--dur), box-shadow var(--dur), transform .15s;
   touch-action: manipulation;
 }
 .fi:focus {
@@ -329,10 +333,11 @@ body {
   margin-bottom: 0;
 }
 .signup-fields.visible {
-  max-height: 200px;
+  max-height: 300px;
   opacity: 1;
   pointer-events: auto;
   margin-top: 0;
+  padding-top: 4px;
 }
 
 /* Strength */
@@ -391,6 +396,7 @@ body {
   transition: background .15s, transform .1s, box-shadow .1s;
   touch-action: manipulation;
   will-change: transform;
+  margin-top: -10px;
 }
 .btn:hover {
   background:#d45a4a;
@@ -402,6 +408,39 @@ body {
   transform:translate(2px,2px);
   box-shadow:1px 1px 0 var(--fg);
   background:#c04a3a;
+}
+
+/* Forgot password */
+.forgot-wrap {
+  text-align: center;
+  margin-top: 2px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    max-height .35s cubic-bezier(.4,0,.2,1),
+    opacity .3s ease;
+}
+.forgot-wrap.visible {
+  max-height: 32px;
+  opacity: 1;
+  pointer-events: auto;
+}
+.forgot-link {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: var(--accent4);
+  text-decoration: none;
+  text-transform: uppercase;
+  border-bottom: 1.5px dashed rgba(93,87,107,.35);
+  padding-bottom: 1px;
+  transition: color var(--dur), border-color var(--dur);
+}
+.forgot-link:hover {
+  color: var(--accent1);
+  border-color: var(--accent1);
 }
 
 /* Password toggle wrapper */
@@ -444,7 +483,98 @@ body {
   }
 }
 
+/* ── Identifier field expanded (sign-in step 1 default) ── */
+.identifier-expanded .fi {
+  padding-top: 18px;
+  padding-bottom: 18px;
+  min-height: 58px;
+  font-size: 14px;
+  transition:
+    padding .35s cubic-bezier(.4,0,.2,1),
+    min-height .35s cubic-bezier(.4,0,.2,1),
+    font-size .25s ease,
+    border-color var(--dur), box-shadow var(--dur), transform .15s;
+}
+
+/* Larger text while actively typing in the expanded identifier field */
+.identifier-expanded .fi:focus {
+  font-size: 15px;
+}
+
 /* ── end ── */
 
 .g-ico { width:15px; height:15px; flex-shrink:0; }
 .a-ico { width:14px; height:14px; flex-shrink:0; }
+
+/* ── Step-based flow ── */
+
+/* Step-wrap: positions the real input and the locked overlay */
+.step-wrap {
+  position: relative;
+}
+
+/* Locked state (grayed-out display of submitted value) */
+.fi-locked {
+  display: none;
+  width: 100%;
+  background: var(--bg2);
+  border: 2.5px solid rgba(20,20,20,.2);
+  border-radius: 8px;
+  padding: 12px 44px 12px 14px;
+  min-height: 44px;
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  color: rgba(20,20,20,.4);
+  position: relative;
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Show locked, hide real input */
+.identifier-locked .fi { display: none; }
+.identifier-locked .fi-locked { display: flex; align-items: center; }
+
+/* Edit (pencil) button inside locked field */
+.lock-edit {
+  position: absolute;
+  right: 10px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  color: rgba(20,20,20,.35);
+  display: flex; align-items: center; justify-content: center;
+  padding: 4px;
+  transition: color var(--dur);
+}
+.lock-edit:hover { color: var(--accent1); }
+
+/* Password step — slide-in reveal */
+.password-step {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    max-height .45s cubic-bezier(.4,0,.2,1),
+    opacity    .35s ease;
+}
+.password-step.visible {
+  max-height: 160px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* strength-wrap inside password-step is always visible when step is visible */
+.password-step #strength-wrap {
+  max-height: none;
+  overflow: visible;
+  opacity: 1;
+  transition: none;
+  margin-top: -8px;
+}
+.password-step #strength-wrap.visible {
+  max-height: none;
+}

@@ -72,11 +72,22 @@
 
     <div class="divider ritem">or email</div>
 
-    <div class="field ritem">
+    <!-- STEP 1: Identifier -->
+    <div class="field ritem" id="identifier-field">
       <label for="identifier-input" id="identifier-label">Email, phone or username</label>
-      <input class="fi" id="identifier-input" type="text" placeholder="Enter your email, phone or username" autocomplete="username"/>
+      <div class="step-wrap" id="identifier-step-wrap">
+        <input class="fi" id="identifier-input" type="text" placeholder="Enter your email, phone or username" autocomplete="username"/>
+        <!-- locked overlay shown after step 1 submit -->
+        <div class="fi-locked" id="identifier-locked" aria-hidden="true">
+          <span id="identifier-locked-value"></span>
+          <button class="lock-edit" id="identifier-edit" type="button" aria-label="Edit identifier">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+        </div>
+      </div>
     </div>
 
+    <!-- STEP 1 extra fields (signup only) -->
     <div class="signup-fields" id="signup-fields">
       <div class="field">
         <label for="username-input">Username <span class="optional">optional</span></label>
@@ -88,31 +99,36 @@
       </div>
     </div>
 
-    <div class="field ritem">
-      <label for="password-input">Password</label>
-      <div class="pw-wrap">
-        <input class="fi" id="password-input" type="password" placeholder="••••••••" autocomplete="current-password"/>
-        <button class="pw-toggle" id="pw-toggle" type="button" aria-label="Toggle password visibility">
-          <!-- Eye open -->
-          <svg class="eye-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-            <circle cx="12" cy="12" r="3"/>
-          </svg>
-          <!-- Eye closed -->
-          <svg class="eye-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/>
-            <line x1="1" y1="1" x2="23" y2="23"/>
-          </svg>
-        </button>
+    <!-- STEP 2: Password (hidden until step 1 done) -->
+    <div class="password-step" id="password-step">
+      <div class="field">
+        <label for="password-input">Password</label>
+        <div class="pw-wrap">
+          <input class="fi" id="password-input" type="password" placeholder="••••••••" autocomplete="current-password"/>
+          <button class="pw-toggle" id="pw-toggle" type="button" aria-label="Toggle password visibility">
+            <svg class="eye-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            <svg class="eye-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/>
+              <line x1="1" y1="1" x2="23" y2="23"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div id="strength-wrap" aria-live="polite">
+        <div class="strength-track"><div id="strength-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div></div>
+        <div id="strength-text"></div>
       </div>
     </div>
 
-    <div id="strength-wrap" aria-live="polite">
-      <div class="strength-track"><div id="strength-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div></div>
-      <div id="strength-text"></div>
-    </div>
+    <button class="btn ritem" id="form-btn" type="button">Continue →</button>
 
-    <button class="btn ritem" id="form-btn" type="button">Enter →</button>
+    <div class="forgot-wrap ritem" id="forgot-wrap">
+      <a href="#" class="forgot-link" id="forgot-link" tabindex="0">Forgot password?</a>
+    </div>
 
   </div>
 </div>

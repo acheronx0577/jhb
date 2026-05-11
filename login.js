@@ -314,26 +314,40 @@ function mountLifePlusLogin(host, options) {
   host.querySelectorAll('.sb').forEach(addPressFeedback);
 
   let leftRect = leftPanel.getBoundingClientRect();
-  let isTicking = false;
+  let parallaxRaf = null;
+  let pointerX = 0;
+  let pointerY = 0;
+
   const onResize = () => {
     leftRect = leftPanel.getBoundingClientRect();
   };
   window.addEventListener('resize', onResize);
+
+  const applyParallax = () => {
+    parallaxRaf = null;
+    leftRect = leftPanel.getBoundingClientRect();
+    const w = Math.max(leftRect.width, 1);
+    const h = Math.max(leftRect.height, 1);
+    const xStrength = 55;
+    const yStrength = 35;
+    const x = ((pointerX - leftRect.left) / w - 0.5) * xStrength;
+    const y = ((pointerY - leftRect.top) / h - 0.5) * yStrength;
+    hero.style.cssText = 'animation:none; transform:translate(' + x + 'px,' + y + 'px)';
+  };
+
   const onMove = e => {
-    if (!isTicking) {
-      window.requestAnimationFrame(() => {
-        const xStrength = currentMode === 'signup' ? 55 : 28;
-        const yStrength = currentMode === 'signup' ? 35 : 18;
-        const x = ((e.clientX - leftRect.left) / leftRect.width - 0.5) * xStrength;
-        const y = ((e.clientY - leftRect.top) / leftRect.height - 0.5) * yStrength;
-        hero.style.cssText = 'animation:none; transform:translate(' + x + 'px,' + y + 'px)';
-        isTicking = false;
-      });
-      isTicking = true;
+    pointerX = e.clientX;
+    pointerY = e.clientY;
+    if (parallaxRaf == null) {
+      parallaxRaf = window.requestAnimationFrame(applyParallax);
     }
   };
   leftPanel.addEventListener('mousemove', onMove);
   const onLeave = () => {
+    if (parallaxRaf != null) {
+      window.cancelAnimationFrame(parallaxRaf);
+      parallaxRaf = null;
+    }
     hero.style.cssText = '';
   };
   leftPanel.addEventListener('mouseleave', onLeave);
@@ -371,6 +385,10 @@ function mountLifePlusLogin(host, options) {
   });
 
   return function destroy() {
+    if (parallaxRaf != null) {
+      window.cancelAnimationFrame(parallaxRaf);
+      parallaxRaf = null;
+    }
     window.removeEventListener('resize', onResize);
     leftPanel.removeEventListener('mousemove', onMove);
     leftPanel.removeEventListener('mouseleave', onLeave);
